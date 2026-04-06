@@ -17,7 +17,7 @@ menu:
   after:
     - name: MtF.wiki
       url: https://mtf.wiki
-      weight: 10
+      weight: 9
 
 markup:
   goldmark:
