@@ -100,7 +100,7 @@
       background: #f9f9f9 !important;
     }
 
-    /* ✅ Details/Summary 打印优化 */
+    /* Details/Summary 打印优化 */
     details {
       display: block !important;
       visibility: visible !important;
@@ -118,18 +118,16 @@
     summary {
       display: list-item !important;
       font-weight: bold !important;
-      cursor: default !important; /* 打印时移除手型光标 */
+      cursor: default !important;
       margin: 0 !important;
       padding: 0 !important;
       outline: none !important;
     }
     
-    /* 隐藏默认的三角箭头，保持简洁 */
     summary::-webkit-details-marker {
       display: none !important;
     }
 
-    /* 确保 details 内部内容可见 */
     details > *:not(summary) {
       margin-top: 0.3rem !important;
       display: block !important;
@@ -195,12 +193,8 @@
                 
                 <!-- ✅ 内容处理：过滤 audio + 展开 details -->
                 {{ $content := .Content }}
-                <!-- 1. 移除所有 audio 标签及其内容 -->
                 {{ $content = $content | replaceRE `<audio[^>]*>[\s\S]*?</audio>` "" }}
-                <!-- 2. 为 details 添加 open 属性 -->
-                {{ $content = $content | replaceRE `<details>` "<details open>" }}
-                <!-- 3. 处理可能已包含属性但未打开的情况 (如 <details class="...">) -->
-                {{ $content = $content | replaceRE `<details([^>]*?)(?<!open)>` "<details$1 open>" }}
+                {{ $content = $content | replaceRE `(<details\b[^>]*)>` "$1 open>" }}
                 
                 {{ $content | safeHTML }}
               </article>
