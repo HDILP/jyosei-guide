@@ -13,9 +13,6 @@
     body {
       font-size: 14px !important;
       line-height: 1.35 !important;
-      font-family: "Helvetica Neue", Arial, "SimSun", sans-serif !important;
-      color: #000 !important;
-      background: #fff !important;
       margin: 0 !important;
       padding: 0 !important;
     }
@@ -62,14 +59,16 @@
       margin: 0.1rem 0 !important;
     }
 
+    /* ✅ 图片极致压缩：宽度降至 45%，移除所有边距 */
     img, figure, .image-wrapper {
-      max-width: 70% !important;
+      max-width: 45% !important;       /* 从 70% 降至 45%，大幅减小高度 */
       height: auto !important;
       display: block !important;
-      margin: 0.4rem auto !important;
+      margin: 0.2rem auto !important;  /* 边距极小化 */
       page-break-inside: avoid !important;
       border: none !important;
       padding: 0 !important;
+      background: none !important;
     }
 
     .print-section {
@@ -94,8 +93,8 @@
       white-space: pre-wrap !important;
       word-wrap: break-word !important;
       border: 1px solid #ccc !important;
-      background: #f9f9f9 !important;
-    }
+      background: #f9f9f9 !important;    }
+
     .book-hint, .book-tabs, .book-tabs-content {
       display: block !important;
       visibility: visible !important;
@@ -143,9 +142,9 @@
         {{ range $bookPaths }}
           {{ $book := $docsSection.GetPage . }}
           
-          {{ if $book }}
-            <!-- 书籍标题 -->
-            <section class="print-section book-title">              <h1 style="font-size:20px; margin:0.3rem 0;">{{ $book.Title }}</h1>
+          {{ if $book }}            <!-- 书籍标题 -->
+            <section class="print-section book-title">
+              <h1 style="font-size:20px; margin:0.3rem 0;">{{ $book.Title }}</h1>
             </section>
 
             <!-- 获取内容 -->
@@ -156,7 +155,7 @@
               {{ end }}
             {{ end }}
 
-            <!-- ✅ 关键修复：过滤 weight >= 100 的附录 -->
+            <!-- ✅ 过滤附录：排除 weight >= 100 的页面 -->
             {{ $bookPages = where $bookPages "Weight" "lt" 100 }}
             
             <!-- 排除打印页自身 -->
