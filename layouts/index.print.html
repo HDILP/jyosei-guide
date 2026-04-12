@@ -4,100 +4,130 @@
   <meta charset="UTF-8">
   <title>{{ .Site.Title }} - 完整打印版</title>
 
-  <!-- 样式处理 -->
+  <!-- 1. 先加载基础样式 -->
   {{ $css := resources.Get "book.scss" | resources.ExecuteAsTemplate "css/book.print.css" . | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 
+  <!-- 2. 后加载覆盖样式（确保优先级更高） -->
   <style>
-    /* 打印专用样式优化 */
+    /* ✅ 关键修复：移除 @media print，让样式在浏览时也能生效 */
+    
+    /* 全局基础设置 */
+    body {
+      font-size: 16px !important; /* 标准打印字号 */
+      line-height: 1.6 !important;
+      font-family: "Times New Roman", "SimSun", serif !important; /* 添加宋体支持中文 */
+      color: #000 !important;
+      background: #fff !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* 隐藏导航元素 */
+    .book-menu, .book-header, .book-search, .book-toc,
+    nav, header, aside {
+      display: none !important;
+    }
+
+    /* 内容区域优化 */
+    .book-content, main, .book-body {
+      margin: 0 !important;
+      padding: 2rem !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      flex: none !important;
+      display: block !important;
+    }
+
+    /* ✅ 图片控制：防止铺满全屏 */
+    img, figure, .image-wrapper {
+      max-width: 80% !important; /* 限制为页面宽度的80% */
+      height: auto !important;
+      display: block !important;
+      margin: 1rem auto !important;
+      page-break-inside: avoid !important;
+      border: 1px solid #ddd !important;
+      padding: 0.5rem !important;      background: #fff !important;
+    }
+
+    /* 标题优化 */
+    h1 {
+      font-size: 24px !important;
+      margin: 1.5rem 0 1rem !important;
+      page-break-after: avoid !important;
+      font-weight: bold !important;
+    }
+
+    h2 {
+      font-size: 20px !important;
+      margin: 1.2rem 0 0.8rem !important;
+      page-break-after: avoid !important;
+      font-weight: bold !important;
+    }
+
+    h3 {
+      font-size: 18px !important;
+      margin: 1rem 0 0.6rem !important;
+      font-weight: bold !important;
+    }
+
+    /* 段落与列表 */
+    p, li {
+      font-size: 16px !important;
+      margin: 0.6rem 0 !important;
+      text-align: justify !important;
+    }
+
+    /* 分页控制 */
+    .print-section {
+      page-break-after: always !important;
+      margin-bottom: 2rem !important;
+      clear: both !important;
+    }
+
+    .book-title {
+      page-break-before: always !important;
+      text-align: center !important;
+      margin: 3rem 0 !important;
+    }
+
+    /* 代码块优化 */
+    pre, code {
+      font-size: 13px !important;
+      page-break-inside: avoid !important;
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;      border: 1px solid #ccc !important;
+      padding: 0.8rem !important;
+      background: #f5f5f5 !important;
+    }
+
+    /* 提示框/标签页强制显示 */
+    .book-hint, .book-tabs, .book-tabs-content {
+      display: block !important;
+      visibility: visible !important;
+      page-break-inside: avoid !important;
+      border: 1px solid #ddd !important;
+      padding: 1rem !important;
+      margin: 1rem 0 !important;
+    }
+
+    /* 链接优化 */
+    a {
+      text-decoration: none !important;
+      color: #000 !important;
+    }
+
+    /* 打印专用设置 */
+    @page {
+      size: A4 !important;
+      margin: 1.5cm !important;
+    }
+
+    /* 仅打印时额外的微调 */
     @media print {
-      /* 隐藏导航元素 */
-      .book-menu, .book-header, .book-search, .book-toc {
-        display: none !important;
-      }
-
-      /* 内容区域占满全宽 */
-      .book-content {
-        margin: 0 !important;
-        max-width: 100% !important;
-        flex: none !important;
-      }
-
-      /* 分页控制 */
-      .print-section {
-        page-break-after: always;
-        margin-bottom: 1.5rem;
-      }
-
-      /* 防止代码块/提示框被截断 */
-      pre, code, .book-hint, .book-tabs {
-        page-break-inside: avoid;
-        white-space: pre-wrap;
-      }
-
-      /* 强制显示被折叠的内容 (Tabs/Hints) */
-      .book-tabs-content, .book-hint {
-        display: block !important;
-        visibility: visible !important;
-      }
-
-      a {
-        text-decoration: none;
-        color: #000;
-      }
-
-      /* ✅ 新增：打印优化核心设置 */
-      /* 1. 图片大小控制 - 防止溢出页面 */      
-      img {
-        max-width: 50% !important;
-        height: auto !important;
-        page-break-inside: avoid !important;
-        display: block !important;
-        margin: 1rem auto !important;
-      }
-
-      /* 2. 字体大小优化 - 适合打印阅读 */
       body {
-        font-size: 16px !important; /* 标准打印字体大小 */
-        line-height: 1.6 !important; /* 增加行高提高可读性 */
-        font-family: "Times New Roman", serif !important;
-      }
-
-      /* 3. 标题层级优化 */
-      h1 {
-        font-size: 2.2em !important;
-        margin-top: 1.5rem !important;
-        page-break-after: avoid !important;
-      }
-      h2 {
-        font-size: 1.8em !important;
-        margin-top: 1.2rem !important;
-        page-break-before: avoid !important;
-      }
-      h3 {
-        font-size: 1.5em !important;
-        margin-top: 1rem !important;
-      }
-
-      /* 4. 段落间距优化 */
-      p {
-        margin: 0.8rem 0 !important;
-      }
-      li {
-        margin: 0.4rem 0 !important;
-      }
-
-      /* 5. 代码块优化 */
-      pre {
-        font-size: 14px !important;
-        padding: 1rem !important;
-        border: 1px solid #ddd !important;
-        page-break-inside: avoid !important;
-      }
-
-      /* 6. 添加页边距 - 确保内容不被裁剪 */
-      @page {
-        margin: 1.5cm !important;        size: A4 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
     }
   </style>
@@ -112,23 +142,19 @@
         <p>生成时间: {{ now.Format "2006-01-02" }}</p>
       </header>
 
-      <!-- 书籍分组处理 -->
+      <!-- 书籍内容 -->
       {{ $docsSection := .Site.GetPage "docs" }}
       
-      {{ if $docsSection }}
-        {{ $bookPaths := slice "honpen" "sokko-boi" }}
+      {{ if $docsSection }}        {{ $bookPaths := slice "honpen" "sokko-boi" }}
         
         {{ range $bookPaths }}
           {{ $book := $docsSection.GetPage . }}
           
           {{ if $book }}
-            <!-- 书籍标题 -->
             <section class="print-section book-title">
               <h1>{{ $book.Title }}</h1>
-              <p class="book-subtitle">目录: {{ $book.Section }}</p>
             </section>
 
-            <!-- 内容处理 -->
             {{ $bookPages := $book.Pages }}
             {{ range $book.Pages }}
               {{ if .Pages }}
@@ -146,7 +172,8 @@
               </article>
             {{ end }}
           {{ end }}
-        {{ end }}      {{ end }}
+        {{ end }}
+      {{ end }}
     </main>
   </div>
 </body>
