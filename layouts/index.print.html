@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <title>{{ .Site.Title }} - 完整打印版</title>
   
-  <!-- ✅ 修复：添加 targetPath 参数 -->
+  <!-- 修复 CSS 路径问题 -->
   {{ $css := resources.Get "book.scss" | resources.ExecuteAsTemplate "css/book.print.css" . | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 
   <style>
-    /* 打印专用样式 */
     @media print {
       .book-menu, .book-header, .book-search, .book-toc {
         display: none !important;
@@ -35,19 +34,28 @@
         text-decoration: none;
         color: #000;
       }
+      
+      /* 强制显示所有内容 */
+      .book-page {
+        display: block !important;
+        visibility: visible !important;
+      }
     }
   </style>
 </head>
 <body>
   <div class="book">
     <main class="book-content">
+      <!-- 封面 -->
       <header class="print-section">
         <h1>{{ .Site.Title }}</h1>
         <p>{{ .Site.Params.description }}</p>
         <p>生成时间: {{ now.Format "2006-01-02" }}</p>
       </header>
 
-      {{ range .Site.RegularPages.ByWeight }}
+      <!-- ✅ 关键修复：遍历所有内容页 -->
+      {{ $pages := where .Site.RegularPages "Section" "docs" }}
+      {{ range $pages.ByWeight }}
         <article class="print-section">
           <h1>{{ .Title }}</h1>
           {{ .Content }}
