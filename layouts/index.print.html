@@ -58,9 +58,17 @@
         <p>生成时间: {{ now.Format "2006-01-02" }}</p>
       </header>
 
-      <!-- ✅ 终极修复：递归获取 docs 下所有后代页面 -->
+      <!-- ✅ 修复：正确获取 docs Section 首页 -->
       {{ $docsSection := .Site.GetPage "section" "docs" }}
-      {{ $allPages := $docsSection.Pages | append $docsSection.Descendants }}
+      
+      <!-- 递归获取所有内容页面（支持任意深度） -->
+      {{ $allPages := slice }}
+      {{ range $docsSection.Pages }}
+        {{ $allPages = $allPages | append . }}
+        {{ if .Pages }}
+          {{ $allPages = $allPages | append .Pages }}
+        {{ end }}
+      {{ end }}
 
       <!-- 按权重排序并排除当前打印页 -->
       {{ $allPages = $allPages.ByWeight }}
