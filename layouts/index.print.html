@@ -40,6 +40,11 @@
         display: block !important;
         visibility: visible !important;
       }
+      
+      /* 隐藏所有折叠内容 */
+      .book-tabs-content:not(.active), .book-hint {
+        display: block !important;
+      }
     }
   </style>
 </head>
@@ -53,9 +58,19 @@
         <p>生成时间: {{ now.Format "2006-01-02" }}</p>
       </header>
 
-      <!-- ✅ 关键修复：遍历所有内容页 -->
-      {{ $pages := where .Site.RegularPages "Section" "docs" }}
-      {{ range $pages.ByWeight }}
+      <!-- ✅ 关键修复：递归获取所有子目录内容 -->
+      {{ $allPages := slice }}
+      {{ range .Site.Sections }}
+        {{ if eq .Section "docs" }}
+          {{ $allPages = $allPages | append .Pages }}
+        {{ end }}
+      {{ end }}
+
+      <!-- 按权重排序 -->
+      {{ $sortedPages := $allPages | sort "Weight" 0 }}
+      
+      <!-- 输出所有内容 -->
+      {{ range $sortedPages }}
         <article class="print-section">
           <h1>{{ .Title }}</h1>
           {{ .Content }}
