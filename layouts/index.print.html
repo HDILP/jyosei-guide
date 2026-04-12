@@ -13,6 +13,9 @@
     body {
       font-size: 14px !important;
       line-height: 1.35 !important;
+      font-family: "Helvetica Neue", Arial, "SimSun", sans-serif !important;
+      color: #000 !important;
+      background: #fff !important;
       margin: 0 !important;
       padding: 0 !important;
     }
@@ -44,7 +47,8 @@
     }
     h3 {
       font-size: 15px !important;
-      margin: 0.4rem 0 0.2rem !important;      font-weight: bold !important;
+      margin: 0.4rem 0 0.2rem !important;
+      font-weight: bold !important;
     }
 
     p {
@@ -59,12 +63,12 @@
       margin: 0.1rem 0 !important;
     }
 
-    /* ✅ 图片极致压缩：宽度降至 45%，移除所有边距 */
+    /* 图片极致压缩 */
     img, figure, .image-wrapper {
-      max-width: 45% !important;       /* 从 70% 降至 45%，大幅减小高度 */
+      max-width: 45% !important;
       height: auto !important;
       display: block !important;
-      margin: 0.2rem auto !important;  /* 边距极小化 */
+      margin: 0.2rem auto !important;
       page-break-inside: avoid !important;
       border: none !important;
       padding: 0 !important;
@@ -93,16 +97,42 @@
       white-space: pre-wrap !important;
       word-wrap: break-word !important;
       border: 1px solid #ccc !important;
-      background: #f9f9f9 !important;    }
+      background: #f9f9f9 !important;
+    }
 
-    .book-hint, .book-tabs, .book-tabs-content {
+    /* ✅ Details/Summary 打印优化 */
+    details {
       display: block !important;
       visibility: visible !important;
       margin: 0.3rem 0 !important;
       padding: 0.4rem !important;
       page-break-inside: avoid !important;
-      font-size: 13px !important;
       border: 1px solid #ddd !important;
+      background: #fafafa !important;
+    }
+    
+    details[open] {
+      padding-bottom: 0.4rem !important;
+    }
+
+    summary {
+      display: list-item !important;
+      font-weight: bold !important;
+      cursor: default !important; /* 打印时移除手型光标 */
+      margin: 0 !important;
+      padding: 0 !important;
+      outline: none !important;
+    }
+    
+    /* 隐藏默认的三角箭头，保持简洁 */
+    summary::-webkit-details-marker {
+      display: none !important;
+    }
+
+    /* 确保 details 内部内容可见 */
+    details > *:not(summary) {
+      margin-top: 0.3rem !important;
+      display: block !important;
     }
 
     a {
@@ -142,12 +172,11 @@
         {{ range $bookPaths }}
           {{ $book := $docsSection.GetPage . }}
           
-          {{ if $book }}            <!-- 书籍标题 -->
+          {{ if $book }}
             <section class="print-section book-title">
               <h1 style="font-size:20px; margin:0.3rem 0;">{{ $book.Title }}</h1>
             </section>
 
-            <!-- 获取内容 -->
             {{ $bookPages := $book.Pages }}
             {{ range $book.Pages }}
               {{ if .Pages }}
@@ -155,19 +184,25 @@
               {{ end }}
             {{ end }}
 
-            <!-- ✅ 过滤附录：排除 weight >= 100 的页面 -->
+            <!-- 过滤附录 -->
             {{ $bookPages = where $bookPages "Weight" "lt" 100 }}
-            
-            <!-- 排除打印页自身 -->
             {{ $bookPages = where $bookPages "RelPermalink" "!=" $.RelPermalink }}
-
-            <!-- 排序 -->
             {{ $bookPages = $bookPages.ByWeight }}
 
             {{ range $bookPages }}
               <article class="print-section">
                 <h2>{{ .Title }}</h2>
-                {{ .Content }}
+                
+                <!-- ✅ 内容处理：过滤 audio + 展开 details -->
+                {{ $content := .Content }}
+                <!-- 1. 移除所有 audio 标签及其内容 -->
+                {{ $content = $content | replaceRE `<audio[^>]*>[\s\S]*?</audio>` "" }}
+                <!-- 2. 为 details 添加 open 属性 -->
+                {{ $content = $content | replaceRE `<details>` "<details open>" }}
+                <!-- 3. 处理可能已包含属性但未打开的情况 (如 <details class="...">) -->
+                {{ $content = $content | replaceRE `<details([^>]*?)(?<!open)>` "<details$1 open>" }}
+                
+                {{ $content | safeHTML }}
               </article>
             {{ end }}
           {{ end }}
