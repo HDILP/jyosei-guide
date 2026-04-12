@@ -13,7 +13,7 @@
     body {
       font-size: 14px !important;
       line-height: 1.35 !important;
-      font-family: "Helvetica Neue", Arial, "SimSun", sans-serif !important;
+      /* font-family: "Helvetica Neue", Arial, "SimSun", sans-serif !important; */
       color: #000 !important;
       background: #fff !important;
       margin: 0 !important;
@@ -65,7 +65,7 @@
 
     /* 图片极致压缩 */
     img, figure, .image-wrapper {
-      max-width: 45% !important;
+      max-width: 40% !important;
       height: auto !important;
       display: block !important;
       margin: 0.2rem auto !important;
@@ -197,7 +197,7 @@
                 {{ $content = $content | replaceRE `<audio\b[^>]*>` "" }}
                 <!-- 2. 移除 audio 结束标签 </audio> -->
                 {{ $content = $content | replaceRE `</audio>` "" }}
-                {{ $content = $content | replaceRE `(<details\b[^>]*)>` "$1 open>" }}
+                <!-- {{ $content = $content | replaceRE `(<details\b[^>]*)>` "$1 open>" }} -->
                 
                 {{ $content | safeHTML }}
               </article>
