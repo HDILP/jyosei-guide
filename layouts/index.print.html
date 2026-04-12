@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ .Site.Title }} - 完整打印版</title>
-  
+
   <!-- 样式处理：执行模板变量并编译 SCSS -->
   {{ $css := resources.Get "book.scss" | resources.ExecuteAsTemplate "css/book.print.css" . | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
@@ -15,7 +15,7 @@
       .book-menu, .book-header, .book-search, .book-toc {
         display: none !important;
       }
-      
+
       /* 内容区域占满全宽 */
       .book-content {
         margin: 0 !important;
@@ -28,19 +28,19 @@
         page-break-after: always;
         margin-bottom: 2rem;
       }
-      
+
       /* 防止代码块/提示框被截断 */
       pre, code, .book-hint, .book-tabs {
         page-break-inside: avoid;
         white-space: pre-wrap;
       }
-      
+
       /* 强制显示被折叠的内容 (Tabs/Hints) */
       .book-tabs-content, .book-hint {
         display: block !important;
         visibility: visible !important;
       }
-      
+
       a {
         text-decoration: none;
         color: #000;
@@ -58,9 +58,15 @@
         <p>生成时间: {{ now.Format "2006-01-02" }}</p>
       </header>
 
-      <!-- ✅ 关键修复：使用 .ByWeight 替代 sort 函数 -->
-      <!-- .Site.RegularPages 自动递归所有子目录，.ByWeight 按权重排序 -->
-      {{ range .Site.RegularPages.ByWeight }}
+      <!-- ✅ 终极修复：递归获取 docs 下所有后代页面 -->
+      {{ $docsSection := .Site.GetPage "section" "docs" }}
+      {{ $allPages := $docsSection.Pages | append $docsSection.Descendants }}
+
+      <!-- 按权重排序并排除当前打印页 -->
+      {{ $allPages = $allPages.ByWeight }}
+      {{ $allPages = where $allPages "RelPermalink" "!=" .RelPermalink }}
+
+      {{ range $allPages }}
         <article class="print-section">
           <h1>{{ .Title }}</h1>
           {{ .Content }}
