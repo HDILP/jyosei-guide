@@ -4,50 +4,99 @@
   <meta charset="UTF-8">
   <title>{{ .Site.Title }} - 完整打印版</title>
 
-  <!-- 直接复用原版样式，不修改任何CSS -->
+  <!-- 样式处理 -->
   {{ $css := resources.Get "book.scss" | resources.ExecuteAsTemplate "css/book.print.css" . | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 
   <style>
-    /* 仅添加打印专用优化，不改变原版样式 */
+    /* 打印专用样式优化 */
     @media print {
-      /* 保留原版字体大小和图片比例 */
-      body {
-        font-size: inherit !important;
-        line-height: inherit !important;
-      }
-      
-      /* 仅调整图片大小（保持比例） */
-      img {
-        max-width: 100% !important;
-        height: auto !important;
-      }
-      
-      /* 仅隐藏导航元素 */
+      /* 隐藏导航元素 */
       .book-menu, .book-header, .book-search, .book-toc {
         display: none !important;
       }
-      
-      /* 仅添加分页控制 */
+
+      /* 内容区域占满全宽 */
+      .book-content {
+        margin: 0 !important;
+        max-width: 100% !important;
+        flex: none !important;
+      }
+
+      /* 分页控制 */
       .print-section {
         page-break-after: always;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
       }
-      
-      /* 防止内容截断 */
+
+      /* 防止代码块/提示框被截断 */
       pre, code, .book-hint, .book-tabs {
         page-break-inside: avoid;
+        white-space: pre-wrap;
       }
-      
-      /* 强制显示折叠内容 */
+
+      /* 强制显示被折叠的内容 (Tabs/Hints) */
       .book-tabs-content, .book-hint {
         display: block !important;
         visibility: visible !important;
       }
-      
-      /* 移除链接样式 */
+
       a {
-        text-decoration: none;        color: #000;
+        text-decoration: none;
+        color: #000;
+      }
+
+      /* ✅ 新增：打印优化核心设置 */
+      /* 1. 图片大小控制 - 防止溢出页面 */      img {
+        max-width: 100% !important;
+        height: auto !important;
+        page-break-inside: avoid !important;
+        display: block !important;
+        margin: 1rem auto !important;
+      }
+
+      /* 2. 字体大小优化 - 适合打印阅读 */
+      body {
+        font-size: 16px !important; /* 标准打印字体大小 */
+        line-height: 1.6 !important; /* 增加行高提高可读性 */
+        font-family: "Times New Roman", serif !important;
+      }
+
+      /* 3. 标题层级优化 */
+      h1 {
+        font-size: 2.2em !important;
+        margin-top: 1.5rem !important;
+        page-break-after: avoid !important;
+      }
+      h2 {
+        font-size: 1.8em !important;
+        margin-top: 1.2rem !important;
+        page-break-before: avoid !important;
+      }
+      h3 {
+        font-size: 1.5em !important;
+        margin-top: 1rem !important;
+      }
+
+      /* 4. 段落间距优化 */
+      p {
+        margin: 0.8rem 0 !important;
+      }
+      li {
+        margin: 0.4rem 0 !important;
+      }
+
+      /* 5. 代码块优化 */
+      pre {
+        font-size: 14px !important;
+        padding: 1rem !important;
+        border: 1px solid #ddd !important;
+        page-break-inside: avoid !important;
+      }
+
+      /* 6. 添加页边距 - 确保内容不被裁剪 */
+      @page {
+        margin: 1.5cm !important;        size: A4 !important;
       }
     }
   </style>
@@ -62,11 +111,10 @@
         <p>生成时间: {{ now.Format "2006-01-02" }}</p>
       </header>
 
-      <!-- 修复核心逻辑 -->
+      <!-- 书籍分组处理 -->
       {{ $docsSection := .Site.GetPage "docs" }}
       
       {{ if $docsSection }}
-        <!-- 显式定义书籍目录顺序 -->
         {{ $bookPaths := slice "honpen" "sokko-boi" }}
         
         {{ range $bookPaths }}
@@ -79,16 +127,14 @@
               <p class="book-subtitle">目录: {{ $book.Section }}</p>
             </section>
 
-            <!-- 获取内容（显式递归） -->
+            <!-- 内容处理 -->
             {{ $bookPages := $book.Pages }}
-            
             {{ range $book.Pages }}
               {{ if .Pages }}
                 {{ $bookPages = $bookPages | append .Pages }}
               {{ end }}
             {{ end }}
 
-            <!-- 排序并排除自身 -->
             {{ $bookPages = $bookPages.ByWeight }}
             {{ $bookPages = where $bookPages "RelPermalink" "!=" $.RelPermalink }}
 
@@ -96,10 +142,10 @@
               <article class="print-section">
                 <h2>{{ .Title }}</h2>
                 {{ .Content }}
-              </article>            {{ end }}
+              </article>
+            {{ end }}
           {{ end }}
-        {{ end }}
-      {{ end }}
+        {{ end }}      {{ end }}
     </main>
   </div>
 </body>
