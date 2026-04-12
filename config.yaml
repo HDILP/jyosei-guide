@@ -36,3 +36,17 @@ params:
   BookPortableLinks: false
   BookServiceWorker: false
   BookToC: false
+
+# ========== 打印配置 ==========
+outputs:
+  home:
+    - HTML
+    - Print  # 添加打印输出
+
+outputFormats:
+  Print:
+    baseName: "print"
+    mediaType: "text/html"
+    path: ""
+    permalinkable: false
+    isPlainText: false
