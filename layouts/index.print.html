@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ .Site.Title }} - 完整打印版</title>
+  <!-- 复用 Hugo Book 的主样式 -->
+  {{ $css := resources.Get "book.scss" | resources.ToCSS }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+
+  <style>
+    /* 打印专用样式 */
+    @media print {
+      /* 隐藏导航元素 */
+      .book-menu, .book-header, .book-search, .book-toc {
+        display: none !important;
+      }
+      
+      /* 全宽内容区域 */
+      .book-content {
+        margin: 0 !important;
+        max-width: 100% !important;
+        flex: none !important;
+      }
+
+      /* 分页控制 */
+      .print-section {
+        page-break-after: always;
+        margin-bottom: 2rem;
+      }
+      
+      /* 防止代码块/提示框被截断 */
+      pre, code, .book-hint, .book-tabs {
+        page-break-inside: avoid;
+        white-space: pre-wrap;
+      }
+      
+      /* 修复链接显示 */
+      a {
+        text-decoration: none;
+        color: #000;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="book">
+    <main class="book-content">
+      <!-- 封面 -->
+      <header class="print-section">
+        <h1>{{ .Site.Title }}</h1>
+        <p>{{ .Site.Params.description }}</p>
+        <p>生成时间: {{ now.Format "2006-01-02" }}</p>
+      </header>
+
+      <!-- 遍历所有页面 -->
+      {{ range .Site.RegularPages.ByWeight }}
+        <article class="print-section">
+          <h1>{{ .Title }}</h1>
+          {{ .Content }}
+        </article>
+      {{ end }}
+    </main>
+  </div>
+</body>
+</html>
