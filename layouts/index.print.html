@@ -4,111 +4,118 @@
   <meta charset="UTF-8">
   <title>{{ .Site.Title }} - 完整打印版</title>
 
-  <!-- 1. 先加载基础样式 -->
+  <!-- 样式处理 -->
   {{ $css := resources.Get "book.scss" | resources.ExecuteAsTemplate "css/book.print.css" . | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 
-  <!-- 2. 后加载覆盖样式（确保优先级更高） -->
   <style>
-    /* ✅ 关键修复：移除 @media print，让样式在浏览时也能生效 */
+    /* ✅ 极致压缩样式：直接生效，无需打印预览 */
     
-    /* 全局基础设置 */
+    /* 1. 全局压缩：减小字号、行高和页边距 */
     body {
-      font-size: 16px !important; /* 标准打印字号 */
-      line-height: 1.6 !important;
-      font-family: "Times New Roman", "SimSun", serif !important; /* 添加宋体支持中文 */
+      font-size: 14px !important;      /* 从 16px 降至 14px，节省大量空间 */
+      line-height: 1.35 !important;    /* 从 1.6 降至 1.35，紧凑行距 */
+      font-family: "Helvetica Neue", Arial, "SimSun", sans-serif !important; /* 无衬线字体更省空间 */
       color: #000 !important;
       background: #fff !important;
       margin: 0 !important;
       padding: 0 !important;
     }
 
-    /* 隐藏导航元素 */
+    /* 2. 页边距最小化（保留打印机安全边距） */
+    .book-content, main {
+      margin: 0 !important;
+      padding: 0.8cm !important;       /* 页边距从 1.5cm 减至 0.8cm */
+      max-width: 100% !important;
+      width: 100% !important;
+      display: block !important;
+    }
+
+    /* 隐藏无关元素 */
     .book-menu, .book-header, .book-search, .book-toc,
     nav, header, aside {
       display: none !important;
     }
 
-    /* 内容区域优化 */
-    .book-content, main, .book-body {
-      margin: 0 !important;
-      padding: 2rem !important;
-      max-width: 100% !important;
-      width: 100% !important;
-      flex: none !important;
-      display: block !important;
-    }
-
-    /* ✅ 图片控制：防止铺满全屏 */
-    img, figure, .image-wrapper {
-      max-width: 80% !important; /* 限制为页面宽度的80% */
-      height: auto !important;
-      display: block !important;
-      margin: 1rem auto !important;
-      page-break-inside: avoid !important;
-      border: 1px solid #ddd !important;
-      padding: 0.5rem !important;      background: #fff !important;
-    }
-
-    /* 标题优化 */
+    /* 3. 标题压缩：大幅减少上下间距 */
     h1 {
-      font-size: 24px !important;
-      margin: 1.5rem 0 1rem !important;
-      page-break-after: avoid !important;
-      font-weight: bold !important;
-    }
-
-    h2 {
-      font-size: 20px !important;
-      margin: 1.2rem 0 0.8rem !important;
-      page-break-after: avoid !important;
-      font-weight: bold !important;
-    }
-
-    h3 {
       font-size: 18px !important;
-      margin: 1rem 0 0.6rem !important;
+      margin: 0.6rem 0 0.3rem !important;
+      font-weight: bold !important;
+      page-break-after: avoid !important;
+    }
+    h2 {
+      font-size: 16px !important;
+      margin: 0.5rem 0 0.25rem !important;
+      font-weight: bold !important;      page-break-after: avoid !important;
+    }
+    h3 {
+      font-size: 15px !important;
+      margin: 0.4rem 0 0.2rem !important;
       font-weight: bold !important;
     }
 
-    /* 段落与列表 */
-    p, li {
-      font-size: 16px !important;
-      margin: 0.6rem 0 !important;
+    /* 4. 段落与列表压缩 */
+    p {
+      margin: 0.25rem 0 !important;    /* 段落间距大幅减小 */
       text-align: justify !important;
     }
+    ul, ol {
+      margin: 0.25rem 0 !important;
+      padding-left: 1.2rem !important;
+    }
+    li {
+      margin: 0.1rem 0 !important;     /* 列表项间距极小化 */
+    }
 
-    /* 分页控制 */
+    /* 5. 图片压缩：减小尺寸和边距 */
+    img, figure, .image-wrapper {
+      max-width: 70% !important;       /* 图片宽度限制为 70%，避免过大 */
+      height: auto !important;
+      display: block !important;
+      margin: 0.4rem auto !important;  /* 图片上下边距减小 */
+      page-break-inside: avoid !important;
+      border: none !important;         /* 移除边框节省空间 */
+      padding: 0 !important;
+    }
+
+    /* 6. 章节容器：移除强制分页，改为自然流动 */
     .print-section {
-      page-break-after: always !important;
-      margin-bottom: 2rem !important;
+      /* ✅ 关键：移除 page-break-after: always，允许章节连续排列 */
+      page-break-after: auto !important;
+      margin: 0.5rem 0 !important;     /* 章节间距极小化 */
       clear: both !important;
     }
 
+    /* 书籍标题保留分页，但间距压缩 */
     .book-title {
-      page-break-before: always !important;
+      page-break-before: always !important; /* 仅在每本书开始时换页 */
+      margin: 0.5rem 0 0.8rem !important;
       text-align: center !important;
-      margin: 3rem 0 !important;
+      border-bottom: 1px solid #000 !important;
+      padding-bottom: 0.3rem !important;
     }
 
-    /* 代码块优化 */
-    pre, code {
-      font-size: 13px !important;
+    /* 7. 代码块压缩 */    pre, code {
+      font-size: 11px !important;      /* 代码字体缩小 */
+      margin: 0.3rem 0 !important;
+      padding: 0.4rem !important;
       page-break-inside: avoid !important;
       white-space: pre-wrap !important;
-      word-wrap: break-word !important;      border: 1px solid #ccc !important;
-      padding: 0.8rem !important;
-      background: #f5f5f5 !important;
+      word-wrap: break-word !important;
+      border: 1px solid #ccc !important;
+      background: #f9f9f9 !important;
     }
 
-    /* 提示框/标签页强制显示 */
+    /* 提示框压缩 */
     .book-hint, .book-tabs, .book-tabs-content {
       display: block !important;
       visibility: visible !important;
+      margin: 0.3rem 0 !important;
+      padding: 0.4rem !important;
       page-break-inside: avoid !important;
+      font-size: 13px !important;
       border: 1px solid #ddd !important;
-      padding: 1rem !important;
-      margin: 1rem 0 !important;
     }
 
     /* 链接优化 */
@@ -117,13 +124,12 @@
       color: #000 !important;
     }
 
-    /* 打印专用设置 */
+    /* 打印设置：最小页边距 */
     @page {
       size: A4 !important;
-      margin: 1.5cm !important;
+      margin: 0.8cm !important;        /* 页边距最小化 */
     }
 
-    /* 仅打印时额外的微调 */
     @media print {
       body {
         -webkit-print-color-adjust: exact !important;
@@ -138,23 +144,25 @@
       <!-- 封面 -->
       <header class="print-section">
         <h1>{{ .Site.Title }}</h1>
-        <p>{{ .Site.Params.description }}</p>
-        <p>生成时间: {{ now.Format "2006-01-02" }}</p>
-      </header>
+        <p style="font-size:13px; margin:0.2rem 0;">{{ .Site.Params.description }}</p>
+        <p style="font-size:12px; margin:0.1rem 0;">生成时间: {{ now.Format "2006-01-02" }}</p>      </header>
 
       <!-- 书籍内容 -->
       {{ $docsSection := .Site.GetPage "docs" }}
       
-      {{ if $docsSection }}        {{ $bookPaths := slice "honpen" "sokko-boi" }}
+      {{ if $docsSection }}
+        {{ $bookPaths := slice "honpen" "sokko-boi" }}
         
         {{ range $bookPaths }}
           {{ $book := $docsSection.GetPage . }}
           
           {{ if $book }}
+            <!-- 书籍标题 -->
             <section class="print-section book-title">
-              <h1>{{ $book.Title }}</h1>
+              <h1 style="font-size:20px; margin:0.3rem 0;">{{ $book.Title }}</h1>
             </section>
 
+            <!-- 获取内容 -->
             {{ $bookPages := $book.Pages }}
             {{ range $book.Pages }}
               {{ if .Pages }}
@@ -166,6 +174,7 @@
             {{ $bookPages = where $bookPages "RelPermalink" "!=" $.RelPermalink }}
 
             {{ range $bookPages }}
+              <!-- ✅ 章节不再强制换页，内容连续排列 -->
               <article class="print-section">
                 <h2>{{ .Title }}</h2>
                 {{ .Content }}
