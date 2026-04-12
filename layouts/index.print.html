@@ -58,28 +58,32 @@
         <p>生成时间: {{ now.Format "2006-01-02" }}</p>
       </header>
 
-      <!-- ✅ 修复：按书籍分组 + 保持内部排序 -->
+      <!-- ✅ 修复：通过路径直接获取书籍目录 -->
       {{ $docsSection := .Site.GetPage "section" "docs" }}
-      
-      <!-- 获取所有书籍（honpen/sokko-boi） -->
-      {{ $books := $docsSection.Sections | where "Kind" "section" }}
-      {{ $books = $books.ByWeight }}
+      {{ if $docsSection }}
+        <!-- 获取所有书籍目录（honpen/sokko-boi） -->
+        {{ $bookPaths := slice "honpen" "sokko-boi" }}
+        
+        {{ range $bookPaths }}
+          {{ $book := $docsSection.GetPage "section" . }}
+          {{ if $book }}
+            <!-- 书籍分隔标题 -->
+            <section class="print-section book-title">
+              <h1>{{ $book.Title }} ({{ $book.Section }})</h1>
+            </section>
 
-      {{ range $books }}
-        <!-- 书籍分隔标题 -->
-        <section class="print-section book-title">
-          <h1>{{ .Title }} ({{ .Section }})</h1>
-        </section>
+            <!-- 获取当前书籍的所有内容页面 -->
+            {{ $bookPages := $book.Pages | append $book.Descendants }}
+            {{ $bookPages = $bookPages.ByWeight }}
+            {{ $bookPages = where $bookPages "RelPermalink" "!=" .RelPermalink }}
 
-        <!-- 获取当前书籍的所有内容页面 -->
-        {{ $bookPages := .Pages | append .Descendants }}
-        {{ $bookPages = $bookPages.ByWeight }}
-        {{ $bookPages = where $bookPages "RelPermalink" "!=" .RelPermalink }}
-
-        {{ range $bookPages }}
-          <article class="print-section">
-            {{ .Content }}
-          </article>
+            {{ range $bookPages }}
+              <article class="print-section">
+                <h1>{{ .Title }}</h1>
+                {{ .Content }}
+              </article>
+            {{ end }}
+          {{ end }}
         {{ end }}
       {{ end }}
     </main>
