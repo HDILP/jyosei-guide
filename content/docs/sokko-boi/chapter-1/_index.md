@@ -314,12 +314,3 @@ description: 第一章 为了发出良好的声音进行准备 - 成为女孩子
 {{< figure src="figure-17.jpg" title="图 17" >}}
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【2】放松和面部伸展\
-  <https://zhuanlan.zhihu.com/p/46040682>
-- 成为女孩子的声音！【3】舌头和嗓子的伸展\
-  <https://zhuanlan.zhihu.com/p/46087057>
-- 成为女孩子的声音！【4】热身运动和姿势调整\
-  <https://zhuanlan.zhihu.com/p/46143584>

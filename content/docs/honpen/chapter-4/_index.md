@@ -824,18 +824,3 @@ CD 的声音，对各声音的特征都容易捕捉，比起理想的状态来�
 {{< figure src="figure-06.jpg" title="图 06" >}}
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【35】练习时间和练习清单\
-  <https://zhuanlan.zhihu.com/p/48857840>
-- 成为女孩子的声音！【36】锻炼本音\
-  <https://zhuanlan.zhihu.com/p/48965056>
-- 成为女孩子的声音！【37】锻炼假声\
-  <https://zhuanlan.zhihu.com/p/49085079>
-- 成为女孩子的声音！【38】习得女声\
-  <https://zhuanlan.zhihu.com/p/49167747>
-- 成为女孩子的声音！【39】作出理想型的女声吧\
-  <https://zhuanlan.zhihu.com/p/49298724>
-- 成为女孩子的声音！【40】颤音、超高音、男声\
-  <https://zhuanlan.zhihu.com/p/49476025>

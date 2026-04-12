@@ -216,13 +216,3 @@ CV：{{< wiki 能登麻美子 "能登 麻美子" >}}
 {{< /details >}}
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【28】发声样式\
-  <https://zhuanlan.zhihu.com/p/48162431>
-
-音频来源：
-
-- Hanasaku Iroha / 花开伊吕波 / 花开物语 8/10-bit 1080p AVC BDRip [Reseed v2 Fin]\
-  <https://vcb-s.com/archives/1065>

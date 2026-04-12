@@ -227,8 +227,3 @@ description: 附录 4：抑扬顿挫 - 成为女孩子的声音！
 {{< /details >}}
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【49】抑扬顿挫\
-  <https://zhuanlan.zhihu.com/p/50526550>

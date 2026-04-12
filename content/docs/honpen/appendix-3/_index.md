@@ -82,8 +82,3 @@ description: 附录 3：发声样式 - 成为女孩子的声音！
 {{< /details >}}
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【48】发声样式\
-  <https://zhuanlan.zhihu.com/p/50432575>

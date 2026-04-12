@@ -63,8 +63,3 @@ Google Book,<https://books.google.com/books?id=bxGISasIW7kC>
 跟随着本书的练习，祝各位都能够接近理想的声音。
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【0】目录及注意事项\
-  <https://zhuanlan.zhihu.com/p/45974316>

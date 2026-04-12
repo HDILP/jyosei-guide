@@ -684,18 +684,3 @@ Windows 10：开始菜单 → 所有程序 → [语音录音机](https://support
 （以上内容请对照日语 {{< wiki 五十音 >}} 进行）
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【21】在哪里练习\
-  <https://zhuanlan.zhihu.com/p/47568341>
-- 成为女孩子的声音！【22】录音和相关准备\
-  <https://zhuanlan.zhihu.com/p/47661085>
-- 成为女孩子的声音！【23】喉结的作用定位\
-  <https://zhuanlan.zhihu.com/p/47758414>
-- 成为女孩子的声音！【24】发出了奇怪声音的时候\
-  <https://zhuanlan.zhihu.com/p/47819598>
-- 成为女孩子的声音！【25】特别练习法和抑扬的加入\
-  <https://zhuanlan.zhihu.com/p/47867522>
-- 成为女孩子的声音！【26】演技练习\
-  <https://zhuanlan.zhihu.com/p/47960326>

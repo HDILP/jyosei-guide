@@ -204,12 +204,3 @@ hō—————哦~（ほーーーーーう）
 {{< figure src="figure-06.jpg" title="图 06" >}}
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【16】沙哑时的处置方法\
-  <https://zhuanlan.zhihu.com/p/47194100>
-- 成为女孩子的声音！【17】假声和混声技巧\
-  <https://zhuanlan.zhihu.com/p/47232595>
-- 成为女孩子的声音！【18】声道伸展和坐姿\
-  <https://zhuanlan.zhihu.com/p/47302687>

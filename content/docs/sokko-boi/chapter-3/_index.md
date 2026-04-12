@@ -629,16 +629,3 @@ nā nā nā nā nā nā nā nā nā（`Re` 音全 9 拍）
 这些发声练习请继续在今后常常练习吧。
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【6】腹式呼吸\
-  <https://zhuanlan.zhihu.com/p/46338192>
-- 成为女孩子的声音！【7】唇颤音和舌颤音\
-  <https://zhuanlan.zhihu.com/p/46429167>
-- 成为女孩子的声音！【8】本音的发声练习\
-  <https://zhuanlan.zhihu.com/p/46523510>
-- 成为女孩子的声音！【9】以复数样式发声（上）\
-  <https://zhuanlan.zhihu.com/p/46617773>
-- 成为女孩子的声音！【10】以复数样式发声（下）\
-  <https://zhuanlan.zhihu.com/p/46679062>

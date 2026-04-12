@@ -84,8 +84,3 @@ description: 附录 2：用语集 - 成为女孩子的声音！
 同时，还有被叫做 Full Voice 的情况。
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【47】用语集\
-  <https://zhuanlan.zhihu.com/p/50340095>

@@ -467,18 +467,3 @@ Female Voices,https://screamingbee.com/product/info/65542
 实践了本书到此为止的练习的话，能够发出自己想象中的声音的话，和变声器一起的相乘效果应该就相当高了吧。
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【41】烟酒和水\
-  <https://zhuanlan.zhihu.com/p/49575223>
-- 成为女孩子的声音！【42】鼻音和上抬喉结\
-  <https://zhuanlan.zhihu.com/p/49820485>
-- 成为女孩子的声音！【43】漏气了\
-  <https://zhuanlan.zhihu.com/p/49971078>
-- 成为女孩子的声音！【44】麦克风的持握方法\
-  <https://zhuanlan.zhihu.com/p/50101935>
-- 成为女孩子的声音！【45】提升自己\
-  <https://zhuanlan.zhihu.com/p/50177328>
-- 成为女孩子的声音！【46】变声器的活用\
-  <https://zhuanlan.zhihu.com/p/50213697>

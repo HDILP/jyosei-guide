@@ -125,10 +125,3 @@ Melanie 训练法 等等也仅仅是训练手段的一种，需要你自行摸�
 {{< figure src="figure-02.jpg" title="图 02" >}}
 
 ---
-
-原文：
-
-- 成为女孩子的声音！【19】Melanie 训练法\
-  <https://zhuanlan.zhihu.com/p/47390482>
-- 成为女孩子的声音！【20】Melanie 法的实际练习\
-  <https://zhuanlan.zhihu.com/p/47477927>
