@@ -193,7 +193,7 @@
                 
                 <!-- ✅ 内容处理：过滤 audio + 展开 details -->
                 {{ $content := .Content }}
-                {{ $content = $content | replaceRE `<audio[^>]*>[\s\S]*?</audio>` "" }}
+                {{ $content = $content | replaceRE `(?s)<audio\b[^>]*>.*?</audio>` "" }}
                 {{ $content = $content | replaceRE `(<details\b[^>]*)>` "$1 open>" }}
                 
                 {{ $content | safeHTML }}
