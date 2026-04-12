@@ -4,18 +4,51 @@
   <meta charset="UTF-8">
   <title>{{ .Site.Title }} - 完整打印版</title>
 
-  <!-- 样式处理 -->
+  <!-- 直接复用原版样式，不修改任何CSS -->
   {{ $css := resources.Get "book.scss" | resources.ExecuteAsTemplate "css/book.print.css" . | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 
   <style>
+    /* 仅添加打印专用优化，不改变原版样式 */
     @media print {
-      .book-menu, .book-header, .book-search, .book-toc { display: none !important; }
-      .book-content { margin: 0 !important; max-width: 100% !important; flex: none !important; }
-      .print-section { page-break-after: always; margin-bottom: 2rem; }
-      pre, code, .book-hint, .book-tabs { page-break-inside: avoid; white-space: pre-wrap; }
-      .book-tabs-content, .book-hint { display: block !important; visibility: visible !important; }
-      a { text-decoration: none; color: #000; }
+      /* 保留原版字体大小和图片比例 */
+      body {
+        font-size: inherit !important;
+        line-height: inherit !important;
+      }
+      
+      /* 仅调整图片大小（保持比例） */
+      img {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+      
+      /* 仅隐藏导航元素 */
+      .book-menu, .book-header, .book-search, .book-toc {
+        display: none !important;
+      }
+      
+      /* 仅添加分页控制 */
+      .print-section {
+        page-break-after: always;
+        margin-bottom: 2rem;
+      }
+      
+      /* 防止内容截断 */
+      pre, code, .book-hint, .book-tabs {
+        page-break-inside: avoid;
+      }
+      
+      /* 强制显示折叠内容 */
+      .book-tabs-content, .book-hint {
+        display: block !important;
+        visibility: visible !important;
+      }
+      
+      /* 移除链接样式 */
+      a {
+        text-decoration: none;        color: #000;
+      }
     }
   </style>
 </head>
@@ -29,15 +62,14 @@
         <p>生成时间: {{ now.Format "2006-01-02" }}</p>
       </header>
 
-      <!-- ✅ 修复核心逻辑 -->
+      <!-- 修复核心逻辑 -->
       {{ $docsSection := .Site.GetPage "docs" }}
       
       {{ if $docsSection }}
-        <!-- 1. 显式定义书籍目录顺序 -->
+        <!-- 显式定义书籍目录顺序 -->
         {{ $bookPaths := slice "honpen" "sokko-boi" }}
         
         {{ range $bookPaths }}
-          <!-- 2. 修正 GetPage 调用：只传路径参数 -->
           {{ $book := $docsSection.GetPage . }}
           
           {{ if $book }}
@@ -47,18 +79,16 @@
               <p class="book-subtitle">目录: {{ $book.Section }}</p>
             </section>
 
-            <!-- 3. 使用显式递归获取内容，避免 .Descendants 类型错误 -->
-            <!-- 获取直接子页面 -->
+            <!-- 获取内容（显式递归） -->
             {{ $bookPages := $book.Pages }}
             
-            <!-- 遍历子目录，获取更深层级的页面 -->
             {{ range $book.Pages }}
               {{ if .Pages }}
                 {{ $bookPages = $bookPages | append .Pages }}
               {{ end }}
             {{ end }}
 
-            <!-- 4. 组内排序并排除打印页自身 -->
+            <!-- 排序并排除自身 -->
             {{ $bookPages = $bookPages.ByWeight }}
             {{ $bookPages = where $bookPages "RelPermalink" "!=" $.RelPermalink }}
 
@@ -66,8 +96,7 @@
               <article class="print-section">
                 <h2>{{ .Title }}</h2>
                 {{ .Content }}
-              </article>
-            {{ end }}
+              </article>            {{ end }}
           {{ end }}
         {{ end }}
       {{ end }}
