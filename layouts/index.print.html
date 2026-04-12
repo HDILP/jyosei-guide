@@ -197,7 +197,12 @@
                 {{ $content = $content | replaceRE `<audio\b[^>]*>` "" }}
                 <!-- 2. 移除 audio 结束标签 </audio> -->
                 {{ $content = $content | replaceRE `</audio>` "" }}
-                <!-- {{ $content = $content | replaceRE `(<details\b[^>]*)>` "$1 open>" }} -->
+                <!-- 2. 移除 details 的 open 属性（覆盖多种写法） -->
+                {{ $content = $content | replaceRE ` open="open"` "" }}      <!-- 移除 open="open" -->
+                {{ $content = $content | replaceRE ` open='open'` "" }}      <!-- 移除 open='open' -->
+                {{ $content = $content | replaceRE ` open>` ">" }}           <!-- 移除 <details open> 中的 open -->
+                {{ $content = $content | replaceRE ` open ` " " }}           <!-- 移除 open 属性（前后有空格） -->
+
                 
                 {{ $content | safeHTML }}
               </article>
