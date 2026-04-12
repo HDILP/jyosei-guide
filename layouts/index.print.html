@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>{{ .Site.Title }} - 完整打印版</title>
   
-  <!-- ✅ 修复：先执行模板，再转换 CSS -->
-  {{ $css := resources.Get "book.scss" | resources.ExecuteAsTemplate . | resources.ToCSS }}
+  <!-- ✅ 修复：添加 targetPath 参数 -->
+  {{ $css := resources.Get "book.scss" | resources.ExecuteAsTemplate "css/book.print.css" . | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 
   <style>
